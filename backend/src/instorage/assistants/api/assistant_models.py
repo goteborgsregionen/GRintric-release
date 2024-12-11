@@ -83,6 +83,7 @@ class AssistantInDBBase(InDB, AssistantBase):
     completion_model_id: Optional[UUID] = None
     tenant_id: UUID = Field(validation_alias=AliasPath(["user", "tenant_id"]))
 
+SessionInDB.model_rebuild()
 
 class AssistantPublicBase(InDB):
     name: str
