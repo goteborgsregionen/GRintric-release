@@ -14,7 +14,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    strictPort: true
+    strictPort: true,
+    hmr: {
+      overlay: false
+    }
   },
   define: {
     __FRONTEND_VERSION__: JSON.stringify(pkg.version),

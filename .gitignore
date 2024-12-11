@@ -12,3 +12,6 @@
 
 # .env
 .env
+
+# logs and stuff
+nohup.out
