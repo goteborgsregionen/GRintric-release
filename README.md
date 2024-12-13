@@ -37,13 +37,18 @@ To run the backend for this project locally, follow these steps:
 2. Navigate to the backend directory in your terminal.
 
 *In backend/pyproject.toml:*
+
 *rad 8: python = "^3.12"*
+
 *rad 20: asyncpg = "^0.29.0"*
+
 *rad 42: dependency-injector = "^4.42.0"*
-*poetry lock --no-update*
+
+*`poetry lock --no-update`*
 
 3. Run `poetry install` to install all dependencies into the current environment.
 4. Copy .env.template to a .env, and fill in the required values. The required values can be found in `backend/README.md`.
+
 *added default values to template*
 
 5. Run `docker compose up -d` to start the required dependencies.
@@ -52,8 +57,11 @@ To run the backend for this project locally, follow these steps:
 8. (Optional) Run `poetry run arq src.instorage.worker.worker.WorkerSettings` to start the worker.
 
 *Test*
+
 *curl http://localhost:8123/api/v1/users/*
+
 *Should receive:*
+
 *{"message":"Unauthenticated""intric_error_code":9005}*
 
 ### Setup steps: Frontend
@@ -64,9 +72,9 @@ To run the frontend for this project locally, follow these steps:
 2. Install pnpm 8.9.0 (https://pnpm.io/)
 3. Navigate to the frontend directory in your terminal
 
-*sudo apt install -y nodejs npm*
-*sudo npm install -g pnpm@8.9.0*
-*chmod +x setup.sh && ./setup.sh*
+*`sudo apt install -y nodejs npm`*
+*`sudo npm install -g pnpm@8.9.0`*
+*`chmod +x setup.sh && ./setup.sh`*
 
 4. Run `pnpm run setup`
 5. Navigate to `frontend/apps/web` and setup the .env file using the .env.example. You can learn more about the environment variables in `frontend/apps/web/README.md`
