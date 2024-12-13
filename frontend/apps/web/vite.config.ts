@@ -13,6 +13,7 @@ export default defineConfig({
     include: ["src/**/*.{test,spec}.{js,ts}"]
   },
   server: {
+    host: '0.0.0.0', // Listen on all IP addresses
     port: 3000,
     strictPort: true,
     hmr: {
