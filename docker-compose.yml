@@ -1,0 +1,64 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8123:8123"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+    volumes:
+      - backend_data:/backend/data
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 8123"] # Check port open
+      interval: 10s # Check every 10 seconds
+      timeout: 15s # Timeout after 5 seconds
+      retries: 5 # Retry 5 times
+      start_period: 90s # Wait 90 seconds before starting checks
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      #target: develop # Use dev stage
+    ports:
+      - "3000:3000" # Map host port 3000 to container port 3000 (for development)
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    environment:
+      - BACKEND_URL=http://backend:8123/api/v1
+      - INTRIC_BACKEND_URL="http://backend:8123"
+
+  db:
+    image: pgvector/pgvector:pg13
+    ports:
+      - 5432:5432
+    env_file:
+      - ./backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  backend_data:
+
+networks:
+  app-network:
+    driver: bridge

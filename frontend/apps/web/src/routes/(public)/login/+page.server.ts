@@ -1,24 +1,27 @@
 import { env } from "$env/dynamic/private";
-import { loginUser } from "$lib/features/auth/auth.server.js";
-import { getMobilityguardLink } from "$lib/features/auth/oidc.server.js";
+import { loginUser } from "$lib/features/auth/auth.server";
+import { getMobilityguardLink } from "$lib/features/auth/oidc.server";
 import { redirect, fail, type Actions } from "@sveltejs/kit";
 
 export const actions: Actions = {
-  login: async ({ cookies, request }) => {
+  login: async (event) => {
+    console.log("Login action in +page.server.ts triggered!"); // Add this line
+    const { cookies, request } = event;
+
     const data = await request.formData();
     const username = data.get("email")?.toString() ?? null;
     const password = data.get("password")?.toString() ?? null;
-    const next = data.get("next")?.toString() ?? null;
+    // Access 'next' from event.url.searchParams instead of $page
+    const next = event.url.searchParams.get("next") ?? null;
 
     if (username && password) {
-      const success = await loginUser(cookies, username, password);
+      const success = await loginUser(event, username, password);
 
       if (success) {
         if (next) {
-          redirect(302, `/${next.slice(1)}`);
+          throw redirect(303, `/${next.slice(1)}`);
         }
-        // TODO: Redirect to dashboard instead (once we have it)
-        redirect(302, "/spaces/personal");
+        throw redirect(303, "/spaces/personal");
       }
     }
 

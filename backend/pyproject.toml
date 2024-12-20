@@ -54,7 +54,7 @@ python-magic = "^0.4.27"
 aiocache = "^0.12.2"
 
 [tool.poetry.scripts]
-start = "src.instorage.server.main:start"
+start = "instorage.server.main:start"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"

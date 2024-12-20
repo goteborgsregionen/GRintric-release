@@ -38,24 +38,42 @@ export function authenticateUser(event: RequestEvent): TokenData | null {
  * Otherwise the function will return `false`
  */
 export async function loginUser(
-  cookies: Cookies,
+  event: RequestEvent,
   username: string,
   password: string
 ): Promise<boolean> {
+  const { fetch, cookies } = event;
+
+  console.log("loginUser called with:", { username, password }); // Log received data
+
+  // URL encode the username and password
+  const encodedUsername = encodeURIComponent(username);
+  const encodedPassword = encodeURIComponent(password);
+
   // Endpoint wants urlencoded data
   const body = new URLSearchParams();
-  body.append("username", username);
-  body.append("password", password);
+  body.append("username", encodedUsername);
+  body.append("password", encodedPassword);
 
-  const response = await fetch(`${env.INTRIC_BACKEND_URL}/api/v1/users/login/token/`, {
+  const url = `${env.INTRIC_BACKEND_URL}/api/v1/users/login/token/`;
+  console.log("Fetching URL:", url); // Log the URL
+
+  const options = {
     body: body,
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
     }
-  });
+  }
+  console.log("Fetch options:", options); // Log fetch options
+
+  const response = await fetch(url, options);
+
+  console.log("loginUser response status:", response.status); // Log response status
 
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error("loginUser error response:", errorText); // Log error response
     return false;
   }
 
