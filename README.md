@@ -4,6 +4,12 @@
 
 # This is a GR fork
 *Creating main Makefile for automation - needs fixes*
+*When working properly now you should be able to run*
+```
+docker-compose up -d
+```
+*there are options to use or not use nginx*
+*...under construction...*
 
 intric is an easy-to-use platform for building and using AI-powered assistants and tools. Take advantage of AI today instead of tomorrow.
 
